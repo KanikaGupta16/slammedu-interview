@@ -27,6 +27,24 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+### Image uploads (create post)
+
+Uploads need Storage RLS policies so the anon key can insert. Run this SQL once in **Supabase Studio** (http://127.0.0.1:54323 → SQL Editor):
+
+```sql
+CREATE POLICY "Allow insert on uploads bucket"
+ON storage.objects FOR INSERT TO anon, authenticated
+WITH CHECK (bucket_id = 'uploads');
+
+CREATE POLICY "Allow select on uploads bucket"
+ON storage.objects FOR SELECT TO anon, authenticated
+USING (bucket_id = 'uploads');
+```
+
+Or run `bunx supabase migration up` to apply the migration.
+
+**Note:** Do not use the new `sb_secret_...` key for `SUPABASE_SERVICE_ROLE_KEY`—it causes "Invalid Compact JWS". Use the SQL policies above instead.
+
 ## Interview Features!
 Feel free to use whatever architecture you want, but you need to implement both backend
 and frontend for the features. Make sure to use AI otherwise this will take too long lol

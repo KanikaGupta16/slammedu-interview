@@ -1,17 +1,113 @@
+"use client";
+
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
+import { PostCard } from "@/components/post-card";
+
+async function fetchPosts(cursor?: string | null, userId?: string | null) {
+  const params = new URLSearchParams();
+  params.set("limit", "10");
+  if (cursor) params.set("cursor", cursor);
+  if (userId) params.set("userId", userId);
+
+  const res = await fetch(`/api/posts?${params}`);
+  if (!res.ok) throw new Error("Failed to fetch posts");
+  return res.json() as Promise<{
+    posts: import("@/components/post-card").Post[];
+    nextCursor: string | null;
+  }>;
+}
+
+function FeedContent() {
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+  } = useInfiniteQuery({
+    queryKey: ["posts"],
+    queryFn: ({ pageParam }) => fetchPosts(pageParam, null),
+    initialPageParam: null as string | null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
+
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0, rootMargin: "100px" }
+    );
+
+    const sentinel = sentinelRef.current;
+    if (sentinel) observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const posts = data?.pages.flatMap((p) => p.posts) ?? [];
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center gap-6 py-12">
+        <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        <p className="text-sm text-muted-foreground">Loading feed...</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex flex-col items-center gap-4 py-12">
+        <p className="text-destructive">Failed to load feed</p>
+      </div>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border p-12 text-center">
+        <p className="text-lg font-medium text-muted-foreground mb-2">
+          No posts yet
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Be the first to create a post using the + button
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-6">
+      {posts.map((post) => (
+        <PostCard key={post.id} post={post} />
+      ))}
+      <div ref={sentinelRef} className="h-4" aria-hidden />
+      {isFetchingNextPage && (
+        <div className="flex justify-center py-4">
+          <div className="size-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function FeedPage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8">
-      <div className="max-w-2xl w-full">
-        <h1 className="text-2xl font-bold mb-6">Feed</h1>
-        
-        <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
-          <p className="text-muted-foreground text-lg mb-2">
-            Feed Placeholder
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Implement the feed feature here.
-          </p>
+    <div className="min-h-screen p-6 md:p-8 bg-background">
+      <div className="mx-auto max-w-2xl">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-foreground">Feed</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">See what’s happening on your campus</p>
         </div>
+        <FeedContent />
       </div>
     </div>
   );

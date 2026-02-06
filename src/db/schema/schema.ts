@@ -56,6 +56,19 @@ export const verification = pgTable("verification", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+// Posts table
+export const posts = pgTable("posts", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  image: text("image").notNull(),
+  caption: text("caption").notNull().default(""),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 // Types
 export type User = typeof user.$inferSelect;
 export type NewUser = typeof user.$inferInsert;
+export type Post = typeof posts.$inferSelect;
+export type NewPost = typeof posts.$inferInsert;

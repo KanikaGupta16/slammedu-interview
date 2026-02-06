@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -13,6 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { CreatePostModal } from "@/components/create-post-modal";
 import { cn } from "@/lib/utils";
 
 interface SidebarProps {
@@ -94,13 +96,15 @@ function ThemeToggle() {
   );
 }
 
-function CreatePostButton() {
+function CreatePostButton({ onClick }: { onClick: () => void }) {
   return (
     <Button
+      type="button"
       variant="ghost"
       size="icon"
-      className="rounded-2xl size-12 bg-accent text-foreground hover:bg-accent/80"
+      className="rounded-2xl size-12 bg-primary text-primary-foreground hover:bg-primary/90 shadow-md"
       aria-label="Create Post"
+      onClick={onClick}
     >
       <Plus className="size-6" strokeWidth={2} />
     </Button>
@@ -122,7 +126,7 @@ function NavIcon({ item, isActive }: NavIconProps) {
       asChild
       className={cn(
         "rounded-2xl size-12",
-        isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+        isActive ? "text-primary" : "text-muted-foreground hover:text-primary"
       )}
     >
       <Link href={item.url} aria-label={item.label}>
@@ -135,6 +139,7 @@ function NavIcon({ item, isActive }: NavIconProps) {
 export function Sidebar({ children }: SidebarProps) {
   const pathname = usePathname();
   const isMobile = useIsMobile();
+  const [createPostOpen, setCreatePostOpen] = useState(false);
 
   const isActiveRoute = (url: string) => {
     if (url === "/app") return pathname === url;
@@ -142,12 +147,12 @@ export function Sidebar({ children }: SidebarProps) {
   };
 
   if (isMobile === undefined) {
-    return <div className="min-h-screen bg-background">{children}</div>;
+    return <div className="min-h-screen slammedu-textured-bg">{children}</div>;
   }
 
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-background flex flex-col">
+      <div className="min-h-screen slammedu-textured-bg flex flex-col">
         <header
           className={cn(
             "fixed top-0 left-0 right-0 z-50",
@@ -156,8 +161,8 @@ export function Sidebar({ children }: SidebarProps) {
           )}
         >
           <div className="flex items-center justify-center px-4 py-3">
-            <Link href="/app" className="font-semibold text-lg">
-              Interview App
+            <Link href="/app" className="font-bold text-lg text-primary">
+              SlammedU
             </Link>
           </div>
         </header>
@@ -174,17 +179,18 @@ export function Sidebar({ children }: SidebarProps) {
           <div className="flex items-center justify-around px-1 py-1.5">
             <NavIcon item={navItems[0]} isActive={isActiveRoute(navItems[0].url)} />
             <NavIcon item={navItems[1]} isActive={isActiveRoute(navItems[1].url)} />
-            <CreatePostButton />
+            <CreatePostButton onClick={() => setCreatePostOpen(true)} />
             <NavIcon item={navItems[2]} isActive={isActiveRoute(navItems[2].url)} />
             <SettingsMenu />
           </div>
         </nav>
+        <CreatePostModal open={createPostOpen} onOpenChange={setCreatePostOpen} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen slammedu-textured-bg flex">
       <aside
         className={cn(
           "fixed left-0 top-0 bottom-0 w-[72px] z-50",
@@ -193,14 +199,14 @@ export function Sidebar({ children }: SidebarProps) {
           "flex flex-col items-center py-5"
         )}
       >
-        <Link href="/app" className="mb-4 cursor-pointer font-bold text-xl">
-          IA
+        <Link href="/app" className="mb-4 cursor-pointer font-bold text-xl text-primary tracking-tight" title="SlammedU">
+          SU
         </Link>
 
         <div className="flex-1 flex flex-col items-center justify-center gap-3">
           <NavIcon item={navItems[0]} isActive={isActiveRoute(navItems[0].url)} />
           <NavIcon item={navItems[1]} isActive={isActiveRoute(navItems[1].url)} />
-          <CreatePostButton />
+          <CreatePostButton onClick={() => setCreatePostOpen(true)} />
           <NavIcon item={navItems[2]} isActive={isActiveRoute(navItems[2].url)} />
           <SettingsMenu />
         </div>
@@ -210,6 +216,7 @@ export function Sidebar({ children }: SidebarProps) {
         </div>
       </aside>
 
+      <CreatePostModal open={createPostOpen} onOpenChange={setCreatePostOpen} />
       <main className="flex-1 ml-[72px]">{children}</main>
     </div>
   );

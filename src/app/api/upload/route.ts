@@ -1,6 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase, STORAGE_BUCKET } from "@/lib/supabase";
+import {
+  supabase,
+  supabaseAdmin,
+  STORAGE_BUCKET,
+} from "@/lib/supabase";
 import { randomUUID } from "crypto";
+
+function isBucketNotFound(error: { message?: string }): boolean {
+  const msg = (error?.message ?? "").toLowerCase();
+  return (
+    msg.includes("bucket") &&
+    (msg.includes("not found") ||
+      msg.includes("does not exist") ||
+      msg.includes("storagenotfound") ||
+      msg.includes("nosuchbucket"))
+  );
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,19 +33,43 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = new Uint8Array(arrayBuffer);
 
-    const { data, error } = await supabase.storage
+    const client = supabaseAdmin ?? supabase;
+
+    let result = await client.storage
       .from(STORAGE_BUCKET)
       .upload(filePath, buffer, {
         contentType: file.type,
         upsert: false,
       });
 
+    if (result.error && isBucketNotFound(result.error)) {
+      const { error: createError } = await client.storage.createBucket(
+        STORAGE_BUCKET,
+        { public: true }
+      );
+      if (createError) {
+        console.error("Create bucket error:", createError);
+        return NextResponse.json(
+          { error: `Bucket not found. Create a bucket named "${STORAGE_BUCKET}" in Supabase Studio (Storage).` },
+          { status: 500 }
+        );
+      }
+      result = await client.storage
+        .from(STORAGE_BUCKET)
+        .upload(filePath, buffer, {
+          contentType: file.type,
+          upsert: false,
+        });
+    }
+
+    const { data, error } = result;
+
     if (error) {
       console.error("Upload error:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const { data: urlData } = supabase.storage
+    const { data: urlData } = (supabaseAdmin ?? supabase).storage
       .from(STORAGE_BUCKET)
       .getPublicUrl(filePath);
 
