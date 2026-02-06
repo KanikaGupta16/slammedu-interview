@@ -112,11 +112,10 @@ export default function UserProfilePage() {
   return (
     <div className="min-h-screen p-6 md:p-8">
       <div className="mx-auto max-w-md">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold">Profile</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            Manage your account
-          </p>
+        <div className="mb-8">
+          <p className="slammedu-section-label text-sm mb-1">Profile</p>
+          <h1 className="slammedu-display text-3xl md:text-4xl tracking-tight">Your account</h1>
+          <p className="slammedu-body text-base text-muted-foreground mt-2">Manage your SlammedU profile.</p>
         </div>
 
         <Card>

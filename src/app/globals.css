@@ -9,6 +9,7 @@ html {
 
 @theme inline {
   --breakpoint-xs: 375px;
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 
   --color-border: var(--border);
   --color-input: var(--input);
@@ -52,42 +53,42 @@ html {
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
-/* SlammedU brand: friendly, campus, Gen Z — "Find your people, start your story" */
+/* SlammedU design: pastel blue/yellow, charcoal type, medium blue CTAs */
 :root {
-  --card: oklch(0.99 0.004 90);
-  --card-foreground: oklch(0.18 0.02 280);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.01 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.02 280);
-  /* Primary: violet — community, connection */
-  --primary: oklch(0.52 0.24 285);
+  --popover-foreground: oklch(0.18 0.01 0);
+  /* Primary: medium-dark blue (Follow / CTAs) */
+  --primary: oklch(0.48 0.18 250);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.96 0.02 285);
-  --secondary-foreground: oklch(0.35 0.15 285);
-  --muted: oklch(0.96 0.01 285);
-  --muted-foreground: oklch(0.48 0.04 285);
-  --accent: oklch(0.94 0.04 285);
-  --accent-foreground: oklch(0.35 0.15 285);
+  --secondary: oklch(0.95 0.02 250);
+  --secondary-foreground: oklch(0.28 0.04 250);
+  --muted: oklch(0.96 0.01 0);
+  --muted-foreground: oklch(0.5 0.01 0);
+  --accent: oklch(0.94 0.02 250);
+  --accent-foreground: oklch(0.25 0.04 250);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.91 0.02 285);
-  --input: oklch(0.91 0.02 285);
-  --ring: oklch(0.52 0.24 285);
+  --border: oklch(0.9 0.01 0);
+  --input: oklch(0.9 0.01 0);
+  --ring: oklch(0.48 0.18 250);
   --radius: 0.75rem;
   --background: oklch(0.985 0.006 90);
-  --foreground: oklch(0.18 0.02 280);
-  --chart-1: oklch(0.52 0.24 285);
+  --foreground: oklch(0.18 0.01 0);
+  --chart-1: oklch(0.48 0.18 250);
   --chart-2: oklch(0.65 0.18 180);
   --chart-3: oklch(0.7 0.15 85);
   --chart-4: oklch(0.6 0.2 330);
   --chart-5: oklch(0.55 0.22 25);
-  --sidebar: oklch(0.98 0.01 285);
-  --sidebar-foreground: oklch(0.18 0.02 280);
-  --sidebar-primary: oklch(0.52 0.24 285);
+  --sidebar: oklch(0.98 0.015 250);
+  --sidebar-foreground: oklch(0.18 0.01 0);
+  --sidebar-primary: oklch(0.48 0.18 250);
   --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.94 0.04 285);
-  --sidebar-accent-foreground: oklch(0.35 0.15 285);
-  --sidebar-border: oklch(0.91 0.02 285);
-  --sidebar-ring: oklch(0.52 0.24 285);
+  --sidebar-accent: oklch(0.94 0.02 250);
+  --sidebar-accent-foreground: oklch(0.25 0.04 250);
+  --sidebar-border: oklch(0.9 0.01 0);
+  --sidebar-ring: oklch(0.48 0.18 250);
 }
 
 .dark {
@@ -125,12 +126,12 @@ html {
   --sidebar-ring: oklch(0.65 0.22 285);
 }
 
-/* SlammedU textured theme background — light blue, white, yellow-green + grain */
+/* CONNECT / FEED panels: pastel light blue + creamy yellow */
 :root {
-  --slammedu-sky: oklch(0.92 0.04 230);
+  --slammedu-sky: oklch(0.93 0.025 240);
   --slammedu-white: oklch(0.99 0.008 90);
-  --slammedu-grey-blue: oklch(0.88 0.03 240);
-  --slammedu-yellow: oklch(0.92 0.08 95);
+  --slammedu-grey-blue: oklch(0.88 0.02 240);
+  --slammedu-yellow: oklch(0.94 0.06 95);
 }
 .dark {
   --slammedu-sky: oklch(0.22 0.04 250);
@@ -164,6 +165,32 @@ html {
   z-index: 1;
 }
 
+/* Typography: section labels (CONNECT/FEED), display, body, card */
+.slammedu-section-label {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+.slammedu-display {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+.slammedu-body {
+  font-weight: 400;
+  color: var(--foreground);
+}
+.slammedu-card-title {
+  font-weight: 600;
+  color: var(--foreground);
+}
+.slammedu-card-meta {
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -172,6 +199,7 @@ html {
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    font-weight: 400;
   }
 }
 

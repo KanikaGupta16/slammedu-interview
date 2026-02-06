@@ -101,11 +101,12 @@ function FeedContent() {
 
 export default function FeedPage() {
   return (
-    <div className="min-h-screen p-6 md:p-8 bg-background">
+    <div className="min-h-screen p-6 md:p-8">
       <div className="mx-auto max-w-2xl">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground">Feed</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">See what’s happening on your campus</p>
+        <div className="mb-8">
+          <p className="slammedu-section-label text-sm mb-1">Feed</p>
+          <h1 className="slammedu-display text-3xl md:text-4xl tracking-tight">Stay in the loop. Never miss a beat.</h1>
+          <p className="slammedu-body text-base text-muted-foreground mt-2">Real-time campus buzz and updates from your people.</p>
         </div>
         <FeedContent />
       </div>

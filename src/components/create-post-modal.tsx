@@ -121,11 +121,11 @@ export function CreatePostModal({ open, onOpenChange }: CreatePostModalProps) {
         onClick={handleClose}
         aria-hidden
       />
-      <Card className="relative z-10 w-full max-w-md rounded-xl border-primary/10 shadow-xl">
+      <Card className="relative z-10 w-full max-w-md rounded-xl bg-card border-border shadow-xl">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <div>
-            <CardTitle id="create-post-title" className="text-primary">Create Post</CardTitle>
-            <CardDescription>Share a photo with your campus</CardDescription>
+            <CardTitle id="create-post-title" className="font-semibold text-foreground">Create Post</CardTitle>
+            <CardDescription className="text-muted-foreground font-normal">Share a photo with your campus</CardDescription>
           </div>
           <Button
             type="button"

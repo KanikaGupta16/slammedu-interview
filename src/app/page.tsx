@@ -60,13 +60,14 @@ export default function SignInPage() {
   return (
     <div className="slammedu-textured-bg flex flex-col items-center justify-center min-h-screen p-8 relative z-10">
       <div className="mb-8 text-center">
-        <h1 className="text-2xl font-bold text-primary tracking-tight">SlammedU</h1>
-        <p className="text-sm text-muted-foreground mt-1">Find your people, start your story</p>
+        <p className="slammedu-section-label text-sm">SlammedU</p>
+        <h1 className="slammedu-display text-3xl md:text-4xl tracking-tight mt-1">Your campus. Your people.</h1>
+        <p className="slammedu-body text-base text-muted-foreground mt-2">Find friends, roommates, and your crew before you get to campus.</p>
       </div>
-      <Card className="w-full max-w-sm shadow-lg border-primary/10">
+      <Card className="w-full max-w-sm shadow-lg rounded-xl bg-card border-border">
         <CardHeader>
-          <CardTitle>{isSignUp ? "Sign Up" : "Sign In"}</CardTitle>
-          <CardDescription>
+          <CardTitle className="font-semibold text-foreground">{isSignUp ? "Sign Up" : "Sign In"}</CardTitle>
+          <CardDescription className="text-muted-foreground font-normal">
             {isSignUp
               ? "Create an account to connect with your campus"
               : "Welcome back! Sign in to continue"}

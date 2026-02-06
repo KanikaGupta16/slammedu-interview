@@ -161,7 +161,7 @@ export function Sidebar({ children }: SidebarProps) {
           )}
         >
           <div className="flex items-center justify-center px-4 py-3">
-            <Link href="/app" className="font-bold text-lg text-primary">
+            <Link href="/app" className="font-semibold text-lg text-primary tracking-tight">
               SlammedU
             </Link>
           </div>
@@ -199,7 +199,7 @@ export function Sidebar({ children }: SidebarProps) {
           "flex flex-col items-center py-5"
         )}
       >
-        <Link href="/app" className="mb-4 cursor-pointer font-bold text-xl text-primary tracking-tight" title="SlammedU">
+        <Link href="/app" className="mb-4 cursor-pointer font-semibold text-xl text-primary tracking-tight" title="SlammedU">
           SU
         </Link>
 

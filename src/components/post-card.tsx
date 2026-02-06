@@ -35,15 +35,15 @@ export function PostCard({ post }: { post: Post }) {
     : "";
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden rounded-xl border-border bg-card shadow-sm">
       <CardHeader className="flex flex-row items-center gap-3 pb-2">
         <Avatar className="size-10">
           <AvatarImage src={post.userImage ?? undefined} alt={post.userName} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col gap-0.5">
-          <p className="font-semibold text-sm">{post.userName}</p>
-          <p className="text-xs text-muted-foreground">{date}</p>
+          <p className="slammedu-card-title text-sm">{post.userName}</p>
+          <p className="slammedu-card-meta">{date}</p>
         </div>
       </CardHeader>
       <CardContent className="p-0">
@@ -56,10 +56,10 @@ export function PostCard({ post }: { post: Post }) {
           />
         </div>
         {post.caption && (
-          <p className="px-6 py-3 text-sm">{post.caption}</p>
+          <p className="px-6 py-3 text-sm font-normal text-foreground">{post.caption}</p>
         )}
       </CardContent>
-      <CardFooter className="border-t py-3" />
+      <CardFooter className="border-t border-border py-3" />
     </Card>
   );
 }

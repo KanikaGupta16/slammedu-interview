@@ -45,11 +45,10 @@ export default function MyPostsPage() {
   return (
     <div className="min-h-screen p-6 md:p-8">
       <div className="mx-auto max-w-2xl">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold">My Posts</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            Posts you&apos;ve created
-          </p>
+        <div className="mb-8">
+          <p className="slammedu-section-label text-sm mb-1">My Posts</p>
+          <h1 className="slammedu-display text-3xl md:text-4xl tracking-tight">Your posts</h1>
+          <p className="slammedu-body text-base text-muted-foreground mt-2">Posts you&apos;ve shared with campus.</p>
         </div>
 
         {isLoading ? (
